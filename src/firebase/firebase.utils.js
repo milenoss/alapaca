@@ -44,6 +44,8 @@ const config =
         return userRef;
     }
 
+    //we have stored the data into the database now we want to store it in our state so our 
+    //application can use it. 
     
     
 

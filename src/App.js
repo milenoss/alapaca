@@ -26,11 +26,27 @@ class App extends React.Component{
   //so we declare un-subscription and add it to the auth. 
   //then we will need to add it to componentWillUnmoutn.
   // async function so we are calling createUserProfileDocument from firebase file. 
+  //data stored in firebase utils now storing data in state to be able to use it.
+  
   
   componentDidMount(){ 
-   this.unsubscribeFromAuth = auth.onAuthStateChanged(async user=> { 
-      createUserProfileDocument(user);
+   this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth=> { 
+      if (userAuth) {
+      const userRef = await createUserProfileDocument(userAuth);
 
+      userRef.onSnapshot(snapShot => { 
+        this.setState({
+          currentUser: { 
+            id: snapShot.id, 
+            ...snapShot.data()
+          }
+        })
+
+      })
+    } else {
+      this.setState({currentUser: userAuth})
+      //no user then set it to null
+    }
       
     })
      
